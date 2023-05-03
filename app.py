@@ -28,6 +28,7 @@ Donations = "Donations"
 st.title("Omneky Brief Bot")
 with st.form('Omneky Brief Bot'):
     brand_name = st.text_input('Plug In Your Brand Name Here')
+    website = st.text_input('Plug In Your Website URL Here')    
     description = st.text_input('Plug In Your Product/Service Description Here')
     value_props = st.text_input('Plug In Your Value Props Here')
     goal = st.selectbox(
