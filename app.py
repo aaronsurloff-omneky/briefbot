@@ -28,9 +28,9 @@ Donations = "Donations"
 st.title("Omneky Brief Bot")
 with st.form('Omneky Brief Bot'):
     brand_name = st.text_input('Plug In Your Brand Name Here')
-    website = st.text_input('Plug In Your Website URL Here')    
+    website = st.text_input('Plug In Your Website URL Here', placeholder="https://wwww.website.com")  
     description = st.text_input('Plug In Your Product/Service Description Here')
-    value_props = st.text_input('Plug In Your Value Props Here')
+    value_props = st.text_input('Plug In Your Value Props Here', placeholder="Saves time and money")
     goal = st.selectbox(
         label="Advertising Goal",
         options=[Fundraising, Installs, Leads, Purchases, Subscribers, Donations])
