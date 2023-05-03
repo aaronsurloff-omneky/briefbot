@@ -10,9 +10,18 @@ from langchain.agents import load_tools
 from langchain.agents import initialize_agent
 from langchain.agents import AgentType
 
+#api key setup
 openai_api_key = st.secrets["openai_apikey"]
 google_api_key = st.secrets["google_api_key"]
 google_cse_id = st.secrets["google_cse_id"]
+
+## Goal Options
+Fundraising = "Fundraising"
+Installs = "Installs"
+Leads = "Leads"
+Purchases = "Purchases"
+Subscribers = "Subscribers"
+Donations = "Donations"
 
 ## App Framework
 st.title("Omneky Brief Bot")
@@ -20,7 +29,9 @@ with st.form('Omneky Brief Bot'):
     description = st.text_input('Plug In Your Product/Service Description Here')
     brand_name = st.text_input('Plug In Your Brand Name Here')
     value_props = st.text_input('Plug In Your Value Props Here')
-    goal = st.text_input('Share Your Advertising Goal Here')
+    goal = st.selectbox(
+        label="Advertising Goal",
+        options=[Fundraising, Installs, Leads, Purchases, Subscribers, Donations])
     submit_button = st.form_submit_button('Generate')
 
 prompt = f"{description}"
@@ -32,7 +43,7 @@ title_template =  PromptTemplate(
 
 brief_template =  PromptTemplate(
             input_variables = ['title', 'google_research', 'value_props', 'goal', 'brand_name', 'description'],
-            template = "I want you to act as a creative director. You will create a creative brief to promote a product or service of your choice. You will choose a target audience, a reason to believe for the audience, USP, and develop 10 ad concepts. Each concept should have a tagline, visual hooks, and call to action in bullet format. Make 2 concepts emotional appeals, 2 straightforward product sales, 1 concept a meme, 1 abstract concept, 2 purpose-driven concepts, 1 anti humor approach,  and 1 really random approach. Also write 10 headline ideas for digital ads. My first suggestion request is: I need help creating a creative brief for {brand_name}. The title of the brief is {title}. Their product/service description is: {description}. The brand's value props include: {value_props}. They are looking for the ads to drive {goal}. Use this google research when writing the brief: {google_research}")
+            template = "I want you to act as a creative director. You will create a creative brief to promote a product or service of your choice. You will choose a target audience, a reason to believe for the audience, USP, and develop 10 ad concepts. Each concept should have a tagline, visual hooks, and call to action in bullet format. Make 2 concepts emotional appeals, 2 straightforward product sales, 1 concept a meme, 1 abstract concept, 2 purpose-driven concepts, 1 anti humor approach,  and 1 really random approach. Also write 10 headline ideas for digital ads. My first suggestion request is: I need help creating a creative brief for {brand_name}. The title of the brief is {title}. Their product/service description is: {description}. The brand's value props include: {value_props}. They are looking for the ads to drive {goal} generation. Use this google research when writing the brief: {google_research}")
 
 ## Memory
 title_memory = ConversationBufferMemory(input_key='topic', memory_key='chat_history')
