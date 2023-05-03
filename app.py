@@ -58,6 +58,8 @@ agent = initialize_agent(tools, llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION
 title_chain = LLMChain(llm=llm, prompt = title_template, verbose = True, output_key='title', memory=title_memory)
 brief_chain = LLMChain(llm=llm, prompt = brief_template, verbose = True, output_key='brief', memory=brief_memory)
 
+## Google search setup
+search_prompt = f"top creative ideas for {goal} ads"
 search = GoogleSearchAPIWrapper(google_api_key = google_api_key, google_cse_id = google_cse_id)
 
 ## show stuff to screen if there is a prompt
@@ -65,7 +67,7 @@ if submit_button:
     title = title_chain.run(prompt)
     st.write(title)
     with st.spinner('Writing Your Brief...'):
-        google_research = agent.run(title)
+        google_research = agent.run(search_prompt)
         brief = brief_chain.run(title=title,  google_research=google_research, goal=goal, brand_name=brand_name, value_props=value_props, description=description)
     
         st.write(brief)
