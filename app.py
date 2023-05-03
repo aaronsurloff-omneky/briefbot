@@ -51,7 +51,7 @@ brief_memory = ConversationBufferMemory(input_key='title', memory_key='chat_hist
 
 
 ## LLMS
-llm = OpenAI(temperature=0.9, max_tokens = 2000, openai_api_key = openai_api_key)
+llm = OpenAI(temperature=0.9, max_tokens = 3000, openai_api_key = openai_api_key)
 tools = load_tools(["google-search"], llm=llm, google_api_key = google_api_key, google_cse_id = google_cse_id)
 agent = initialize_agent(tools, llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
 
