@@ -1,9 +1,5 @@
 ## Bring in deps
 import os
-from apikeys import openai_apikey
-from apikeys import google_api_key 
-from apikeys import google_cse_id
-
 import streamlit as st
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
@@ -14,9 +10,9 @@ from langchain.agents import load_tools
 from langchain.agents import initialize_agent
 from langchain.agents import AgentType
 
-os.environ['OPENAI_API_KEY'] = openai_apikey
-os.environ['GOOGLE_API_KEY'] = google_api_key 
-os.environ['GOOGLE_CSE_ID'] = google_cse_id
+openai_api_key = st.secrets["openai_apikey"]
+google_api_key = st.secrets["google_api_key"]
+google_cse_id = st.secrets["google_cse_id"]
 
 ## App Framework
 st.title("Omneky Brief Bot")
@@ -66,7 +62,7 @@ if submit_button:
         with st.expander('Title History'):
             st.info(title_memory.buffer)
     
-        with st.expander('Blog History'):
+        with st.expander('Brief History'):
             st.info(brief_memory.buffer)
 
         with st.expander('Google Research'):
