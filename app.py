@@ -48,8 +48,8 @@ brief_template =  PromptTemplate(
             template = "I want you to act as a creative director. You will create a creative brief to promote a product or service of your choice. You will choose a target audience, a reason to believe for the audience, USP, and develop 7 ad concepts. Each concept should have a tagline, visual hooks, and call to action in bullet format. Make 1 concepts emotional appeals, 1 straightforward product sales, 1 concept a meme, 1 abstract concept, 1 purpose-driven concepts, 1 anti humor approach,  and 1 really random approach. Also write 1 headline ideas for digital ads. My first suggestion request is: I need help creating a creative brief for {brand_name}. The title of the brief is {title}. Their product/service description is: {description}. The brand's value props include: {value_props}. They are looking for the ads to drive {goal} generation. Use this google research on good ad concepts writing the brief: {google_research}. Also use the follow research of {brand_name}'s website: {text_summary}")
 
 website_template =  PromptTemplate(
-        input_variables = ['rawtext'],
-        template = "Sumarrize the following website research: {rawtext}")
+        input_variables = ['brand_name','first_1000_chars'],
+        template = "Explain the product/service description for {brand_name} based on this scape of their website in 3 sentences: {first_1000_chars}")
 
 ## Memory
 title_memory = ConversationBufferMemory(input_key='topic', memory_key='chat_history')
@@ -71,14 +71,26 @@ search = GoogleSearchAPIWrapper(google_api_key = google_api_key, google_cse_id =
 
 ## show stuff to screen if there is a prompt
 if submit_button:
-    title = title_chain.run(prompt)
+    with st.spinner('Writing Your Brief Title...'):
+        title = title_chain.run(prompt)
     with st.spinner('Researching Your Website...'):
         web_response = requests.get(website)
         html_content = web_response.text
         soup = BeautifulSoup(html_content, "html.parser")
         rawtext = soup.get_text()
-        text_summary = website_chain.run(prompt)
+    
+    ## Extra first 1000 characters to stay within token limit
+        first_1000_chars = rawtext[:1000]
+    
+    ## Create summary of website research
+        text_summary = website_chain.run(brand_name=brand_name, rawtext=rawtext, first_1000_chars=first_1000_chars)
     st.write(title)
+    
+    ## Research Google
+    with st.spinner('Researching Google...'):
+        google_research = agent.run(search_prompt)
+    
+     ## Write Creative Brief
     with st.spinner('Writing Your Brief...'):
         google_research = agent.run(search_prompt)
         brief = brief_chain.run(title=title,  google_research=google_research, goal=goal, brand_name=brand_name, value_props=value_props, description=description, text_summary=text_summary)
@@ -96,3 +108,6 @@ if submit_button:
         
         with st.expander('Website Research'):
             st.info(text_summary)
+        
+        with st.expander('Website Research Raw'):
+            st.info(rawtext)
