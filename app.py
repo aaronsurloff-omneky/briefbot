@@ -10,6 +10,7 @@ from langchain.utilities import GoogleSearchAPIWrapper
 from langchain.agents import load_tools
 from langchain.agents import initialize_agent
 from langchain.agents import AgentType
+from bs4 import BeautifulSoup
 
 #api key setup
 openai_api_key = st.secrets["openai_apikey"]
