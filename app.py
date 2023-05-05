@@ -73,6 +73,7 @@ search = GoogleSearchAPIWrapper(google_api_key = google_api_key, google_cse_id =
 if submit_button:
     with st.spinner('Writing Your Brief Title...'):
         title = title_chain.run(prompt)
+        st.write(title)
     with st.spinner('Researching Your Website...'):
         web_response = requests.get(website)
         html_content = web_response.text
@@ -84,7 +85,6 @@ if submit_button:
     
     ## Create summary of website research
         text_summary = website_chain.run(brand_name=brand_name, rawtext=rawtext, first_1000_chars=first_1000_chars)
-    st.write(title)
     
     ## Research Google
     with st.spinner('Researching Google...'):
