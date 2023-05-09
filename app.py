@@ -97,18 +97,14 @@ if submit_button:
         brief = brief_chain.run(title=title,  google_research=google_research, goal=goal, brand_name=brand_name, value_props=value_props, description=description, text_summary=text_summary)
     
         st.write(brief)
-
+        ## Display the memory of each action taken
         with st.expander('Title History'):
             st.info(title_memory.buffer)
-    
         with st.expander('Blog History'):
             st.info(brief_memory.buffer)
-
         with st.expander('Google Research'):
-            st.info(google_research)
-        
+            st.info(google_research)        
         with st.expander('Website Research'):
-            st.info(text_summary)
-        
+            st.info(text_summary)       
         with st.expander('Website Research Raw'):
             st.info(rawtext)
