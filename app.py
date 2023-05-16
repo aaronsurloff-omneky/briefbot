@@ -36,7 +36,7 @@ with st.form('Omneky Brief Bot'):
         goal = st.selectbox(
             label="Advertising Goal",
             options=[Fundraising, Installs, Leads, Purchases, Subscribers, Donations])
-        purpose = st.text_input('Plug In Your Product/Service Purpose Here')
+        purpose = st.text_input('Plug In Your Product/Service Purpose Here', placeholder="Ex. reduce carbon emissions")
     submit_button = st.form_submit_button('Generate')
 
 prompt = f"{description}"
